@@ -18,7 +18,14 @@ Since all the parameters of __init__ are technically optional, we have the follo
     No bio
     No source file
 
-There is another constructor, class method fromFile(), which takes in a JSON file and creates one or many People as instructed... which is helpful when we want to store a family tree over time--be warned, though, that your JSONs can get very long, which is why there's also...
-a toFile() method, which creates a JSON file describing THE TREE ROOTED AT THIS PERSON, not the whole family tree! The user is responsible for saving trees properly.
+There is another constructor, class method fromFile(), which takes in a JSON file and creates one or many People as instructed... which is helpful when we want to store a family tree over time--there's also a saveToFile() method. This creates a JSON file describing THE TREE ROOTED AT THIS PERSON, not the whole family tree! The user is responsible for saving trees properly.
 However, you can put JSONs in JSONs (in JSONs, in JSONs...) -- so I can save Mom.json and then include it later on in Grandma.json. Grandma's fromFile() constructor will then consider that Mom is now trapped in that awful JSON file, and it will build a nice Mom Person out of Mom.json, and add Mom to Grandma's children.
 (As of Nov 17, 2023 the JSON implementation and bio.py are not complete.)
+
+**The Family Tree Toolkit**
+person.py includes implementations of several functions that are used to navigate a family tree and provide information about individual members' relationships to each other. In particular, it has a function getRelation(person A, person B) which tells us _who person B is to person A_, not the other way around.
+For example:
+    getRelation(me, Mom) = mother
+    getRelation(me, my grandma's daughter) = aunt
+    getRelation(my sister, my grandma's cousin's daughter) = second cousin once removed
+
