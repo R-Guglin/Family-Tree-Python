@@ -11,14 +11,14 @@ since there is no standardized gender-neutral term for parent's sibling and sibl
 - If initialized with a parent and/or children, the constructor changes generations as needed, using updateGen().
 - The Person may also be initialized from a source JSON file, which is described in more detail below, although this functionality is not working yet as of Nov 17, 2023 because it's also midterms week and this is a side project and I am learning all about JSONs and everything else from my own (impeccable) research skills, which means it will take some time for me to implement all that.
 
-Since all the parameters of __init__ are technically optional, we have the following default Person:
-    Name: Empty string
-    Pronouns: they/them/theirs
-    Age: 2023 years old
-    No parent
-    No children
-    No bio
-    No source file
+Since all the parameters of __init__ are technically optional, we have the following default Person.
+Name: Empty string
+Pronouns: they/them/theirs
+Age: 2023 years old
+No parent
+No children
+No bio
+No source file
 
 There is another constructor, class method fromFile(), which takes in a JSON file and creates one or many People as instructed... which is helpful when we want to store a family tree over time--there's also a saveToFile() method. This creates a JSON file describing THE TREE ROOTED AT THIS PERSON, not the whole family tree! The user is responsible for saving trees properly.
 However, you can put JSONs in JSONs (in JSONs, in JSONs...) -- so I can save Mom.json and then include it later on in Grandma.json. Grandma's fromFile() constructor will then consider that Mom is now trapped in that awful JSON file, and it will build a nice Mom Person out of Mom.json, and add Mom to Grandma's children.
