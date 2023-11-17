@@ -32,4 +32,5 @@ For example:
     - getRelation(me, Mom) = mother
     - getRelation(me, my grandma's daughter) = aunt
     - getRelation(my sister, my grandma's cousin's daughter) = second cousin once removed
+    - getRelation(me, my brother's granddaughter's son) = great-grandnephew
 
