@@ -27,7 +27,7 @@ However, you can put JSONs in JSONs (in JSONs, in JSONs...) -- so I can save Mom
 **The Family Tree Toolkit**
 - person.py includes implementations of several functions that are used to navigate a family tree and provide information about individual members' relationships to each other. In particular, it has a function getRelation(person A, person B) which tells us _who person B is to person A_, not the other way around.
 For example:
-    getRelation(me, Mom) = mother
-    getRelation(me, my grandma's daughter) = aunt
-    getRelation(my sister, my grandma's cousin's daughter) = second cousin once removed
+    - getRelation(me, Mom) = mother
+    - getRelation(me, my grandma's daughter) = aunt
+    - getRelation(my sister, my grandma's cousin's daughter) = second cousin once removed
 
