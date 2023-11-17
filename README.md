@@ -6,7 +6,7 @@ An object of the class Person is initialized as the root of an empty tree.
   ["they", "them", "theirs", "parent", "child", "sibling", "parent's sibling", "sibling's child"] and
 - since there is no standardized gender-neutral term for parent's sibling and sibling's child, this default gender can cause a few weird strings to occur.
   - When it tries to describe someone like your great-great-grandma's nonbinary sibling (good on them for living their truth in 1910!), it'll say "great-great-grandparent's sibling" which is normal enough.
-  - However, if your sister has a nonbinary great-grandchild, the program will describe that person as your "great-sibling's child" which is an issue I plan to fix as soon as I do enough research to decide which is the most appropriate and respectful term for such a person. (I have seen "nibling" used but I'm not convinced that is right.)
+  - If your sister has a nonbinary great-grandchild, the program will describe that person as your "sibling's great-grandchild" which is an issue I plan to fix as soon as I do enough research to decide which is the most appropriate and respectful term for such a person. (I have seen "nibling" used but I'm not convinced that is right.)
 - bio is an optional JSON with cool stuff like a biography and photo(s).
 ... there are several functions for adding bio stuff to a Person, all stored in bio.py (not included as of Nov 17, 2023) so that their heinous bulk doesn't clutter up and desecrate the class module.
 - gen is the number of generations between this object and the root of the tree it's in; initialized to 0.
