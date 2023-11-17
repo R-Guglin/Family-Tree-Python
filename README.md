@@ -3,7 +3,7 @@ Python implementation of a single-parent family tree.
 An object of the class Person is initialized as the root of an empty tree.
 - name is a list [First, Middle, Last]; birthdate is [Day, Month, Year] because that's how most of the world does it.
 - gender is either "M" or "F" OR a list [Subject, Object, Possessive, [terms for relations]] if the person uses different pronouns. It is used to determine not only pronouns, but terms like "mother/father/parent", "sister/brother/sibling", etc. -- if no sufficient parameter is provided, the constructor defaults to:
-  ["they", "them", "theirs", "parent", "child", "sibling", "parent's sibling", "sibling's child"]
+  ["they", "them", "theirs", "parent", "child", "sibling", "parent's sibling", "sibling's child"] and
 since there is no standardized gender-neutral term for parent's sibling and sibling's child, this default gender can cause a few weird strings to occur. When it tries to describe someone like your great-great-grandma's nonbinary sibling (good on them for living their truth in 1910!); it'll say "great-great-grandparent's sibling" which is normal enough. However, if your sister has a nonbinary great-grandchild, the program will describe that person as your "great-sibling's child" which is an issue I plan to fix as soon as I do enough research to decide which is the most appropriate and respectful term for such a person. (I have seen "nibling" used but I'm not convinced that is right.)
 - bio is an optional JSON with cool stuff like a biography and photo(s).
 ... there are several functions for adding bio stuff to a Person, all stored in bio.py (not included as of Nov 17, 2023) so that their heinous bulk doesn't clutter up and desecrate the class module.
