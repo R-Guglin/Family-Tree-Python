@@ -1,6 +1,5 @@
 # Family-Tree-Python
-- Python implementation of a single-parent family tree.
-**person.py:**
+Python implementation of a single-parent family tree.
 - An object of the class Person is initialized as the root of an empty tree.
 - name is a list [First, Middle, Last]; birthdate is [Day, Month, Year] because that's how most of the world does it.
 - gender is either "M" or "F" OR a list [Subject, Object, Possessive, [terms for relations]] if the person uses different pronouns. It is used to determine not only pronouns, but terms like "mother/father/parent", "sister/brother/sibling", etc. -- if no sufficient parameter is provided, the constructor defaults to:
