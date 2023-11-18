@@ -13,7 +13,7 @@ class Person:
         self.birthdate = birthdate
         self.parent = parent
         self.children = []
-        self.file = "" # either "" or JSON
+        self.file = ""
 
         if parent != None:
             parent.setChild(self)
@@ -48,7 +48,7 @@ class Person:
     def saveToFile(self, filename = None):
         data = self.getData()
         if not filename:
-            filename = self.name[0] + "_" + self.name[2] + ".json" #ex: Rebecca_S_Guglin.json
+            filename = self.name[0] + "_" + self.name[2] + ".json" #ex: Rebecca_Guglin.json
         with open(filename, "w") as wf:
             json.dump(data, wf, indent=4)
         self.setFile(filename)
