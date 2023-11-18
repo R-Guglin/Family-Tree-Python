@@ -1,6 +1,14 @@
 import json
 from datetime import datetime
 
+'''
+Known bugs:
+1. Trouble with default filename for an unnamed Person
+2. Does not accept custom gender data, even if properly formatted
+3. No protections of any kind from user tampering -- relies on the assumption 
+that the only entity reading and writing JSON files is the computer itself.
+'''
+
 class Person:
     def __init__(self, 
                  name = ["","",""], 
