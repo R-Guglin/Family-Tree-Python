@@ -5,9 +5,7 @@ Python implementation of a single-parent family tree.
 - name is a list [First, Middle, Last]; birthdate is [Day, Month, Year] because that's how most of the world does it.
 - gender is either "M" or "F" OR a list [Subject, Object, Possessive, [terms for relations]] if the person uses different pronouns. It is used to determine not only pronouns, but terms like "mother/father/parent", "sister/brother/sibling", etc. -- if no sufficient parameter is provided, the constructor defaults to:
   ["they", "them", "theirs", "parent", "child", "sibling", "parent's sibling", "sibling's child"].
-  - If your sister has a nonbinary great-grandchild, the program will describe that person as your "sibling's great-grandchild" which is an issue I plan to fix as soon as I do enough research to decide which is the most appropriate and respectful term for such a person. (I have seen "nibling" used but I'm not convinced that is right.)
-- bio is an optional JSON with cool stuff like a biography and photo(s).
-... there are several functions for adding bio stuff to a Person, all stored in bio.py (not included as of Nov 17, 2023) so that their heinous bulk doesn't clutter up and desecrate the class module.
+- bio is an optional JSON with cool stuff like a biography and photo(s). There are several functions for adding bio stuff to a Person, all stored in bio.py (not included as of Nov 17, 2023) so that their heinous bulk doesn't clutter up and desecrate the class module.
 - gen is the number of generations between this object and the root of the tree it's in; initialized to 0.
 - If initialized with a parent and/or children, the constructor changes generations as needed, using updateGen().
 - The Person may also be initialized from a source JSON file, which is described in more detail below.
