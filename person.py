@@ -5,27 +5,83 @@ class Person:
     def __init__(self, 
                  name = ["","",""], 
                  gender = None,
-                 birthdate = [1,1,1000],
+                 birthdate = [1,1,1],
                  parent = None):
         self.gen = 0
         self.name = name
-        self.gender = parseGender(gender)
+        self.gender = gender
         self.birthdate = birthdate
         self.parent = parent
         self.children = []
-        self.file = ""
+        self.file = "" # either "" or JSON
 
         if parent != None:
             parent.setChild(self)
+
+    @classmethod
+    def fromData(cls, data):
+        assert isinstance(data, dict)
+        name = data["name"]
+        gender = data["gender"]
+        birthdate = data["birthdate"]
+
+        newP = Person(name, gender, birthdate, None)
+
+        children = data["children"]
+        if children != 0:
+            for i in range(0, len(children)):
+                if type(children[i]) == dict:
+                    newP.setChild(Person.fromData(children[i]))
+                elif type(children[i]) == str:
+                    newP.setChild(Person.fromFile(children[i]))
+        
+        return newP
+
+    @classmethod
+    def fromFile(cls, filename):
+        with open(filename, "r") as rf:
+            data = json.load(rf)
+        newP = Person.fromData(data)
+        newP.setFile(filename)
+        return newP
+
+    def saveToFile(self, filename = None):
+        data = self.getData()
+        if not filename:
+            filename = self.name[0] + "_" + self.name[2] + ".json" #ex: Rebecca_S_Guglin.json
+        with open(filename, "w") as wf:
+            json.dump(data, wf, indent=4)
+        self.setFile(filename)
+
+    def getData(self):
+        data = {"name" : self.name,
+                "gender": self.gender,
+                "birthdate": self.birthdate}
+        if len(self.children) > 0:
+            data["children"] = [] #[child1 data or child1.json, child2 data or child2.json...]
+            for c in self.children:
+                if c.file == "":  
+                    data["children"].append(c.getData())
+                else: 
+                    data["children"].append(c.file)
+        else:
+            data["children"] = 0
+        return data
+
+    def setName(self, n):
+        self.name = n
+
+    def setGender(self, g):
+        self.gender = parseGender(g)
+
+    def setBday(self, b):
+        self.birthdate = b
 
     def setChild(self, c):
         if c not in self.children:
             self.children.append(c)
             c.parent = self
             c.updateGen(self.gen)
-            return True
-        else:
-            return False
         
     def setFile(self, filename):
         self.file = filename
@@ -36,57 +92,6 @@ class Person:
         if len(self.children) > 0:
             for child in self.children:
                 child.updateGen(self.gen)
-
-    @classmethod
-    def fromData(cls, data):
-        # data must be a dict
-        name = data["name"]
-        gender = data["gender"]
-        birthdate = data["birthdate"]
-
-        newP = Person(name, gender, birthdate)
-
-        children = data["children"]
-        if children:
-            for c in children.keys():
-                if type(c) == str:
-                    newChild = Person.fromData(json.loads(c))
-                    newP.setChild(newChild)
-                elif type(c) == dict:
-                    newChild = Person.fromData(c)
-                    newP.setChild(newChild)
-    
-        return newP
-
-
-    @classmethod
-    def fromFile(cls, filename):
-        data = json.loads(filename)
-        return Person.fromData(data)
-    
-
-    def saveToFile(self, filename = None):
-        data = self.getData()
-        if not filename:
-            filename = self.name[0] + self.name[1][0] + self.name[2] + ".json"
-        with open(filename, "w") as wf:
-            json.dump(data, wf, indent=4)
-        self.setFile(filename)
-
-    def getData(self):
-        data = {"name" : self.name,
-                "gender": self.gender,
-                "birthdate": self.birthdate}
-        if len(self.children) > 0:
-            data["children"] = {}
-            for c in self.children:
-                if c.file != "":
-                    data["children"][c.name[0]] = c.file
-                else:      
-                    data["children"][c.name[0]] = c.getData()
-        else:
-            data["children"] = None
-        return data
     
     def getAge(self):
         today = datetime.now()
@@ -102,17 +107,12 @@ class Person:
             out += "No Name"
         else:
             for i in range(0,3):
-                out += self.name[i] + " "
-        out += ("\nBorn " + parseDate(self.birthdate))
-        out += (" (Aged " + str(self.getAge()) + ")")
-        out += ("\nGeneration " + str(self.gen))
-        if self.parent:
-            out += "\nParent: " + self.parent.name[0] + " " + self.parent.name[2]
-        if len(self.children) > 0:
-            out += "\nChildren:\n"
-            for child in self.children:
-                out += "   " + child.name[0] + " " + child.name[2]+"\n"
-        return out + "\n"
+                if self.name[i] == "":
+                    pass
+                else:
+                    out += self.name[i] + " "
+        out += ("(Age " + str(self.getAge()) + ")\n")
+        return out
 
 # Family tree toolkit
 
@@ -167,23 +167,26 @@ def getRelation(A, B):
     return parseRelation(degree, removed, A, B)
 
 def parseRelation(deg, rem, pA, pB):
-
+    gender = parseGender(pB.gender)
     if deg == -1:
         if rem < 0: # descendant
-            return ((abs(2 + min(rem, -2)) * "great-") + (1 * "grand") + pB.gender[4])
+            return ((abs(2 + min(rem, -2)) * "great-") + (min(1, abs(rem + 1)) * "grand") + gender[4])
         elif rem == 0:
             # you are your own "-1 cousin 0 times removed"
             return "self"
         elif rem > 0: # ancestor
-            return ((abs(2 - max(rem, 2)) * "great-") + (1 * "grand") + pB.gender[3])
+            return ((abs(2 - max(rem, 2)) * "great-") + (min(1, abs(1 - rem)) * "grand") + gender[3])
         
     elif deg == 0:
         if rem < 0: # niece/nephew
-            return ((abs(2 + min(rem, -2)) * "great-") + (1 * "grand") + pB.gender[7])
+            if gender[7] == "niece" or gender[7] == "nephew":
+                return ((abs(2 + min(rem, -2)) * "great-") + (min(1, abs(rem + 1)) * "grand") + gender[7])
+            else:
+                return "sibling's " + parseRelation(-1, rem, Person(), pB)
         elif rem == 0: # sibling
-            return (pA.birthdate == pB.birthdate) * "twin " + pB.gender[5]
+            return (pA.birthdate == pB.birthdate) * "twin " + gender[5]
         elif rem > 0:
-            return ((abs(2 - max(rem, 2)) * "great-") + (1 * "grand") + pB.gender[6])
+            return ((abs(2 - max(rem, 2)) * "great-") + (min(1, abs(1 - rem)) * "grand") + gender[6])
         
     elif deg > 0:
         nth = str(deg) + "th"
@@ -208,9 +211,6 @@ def parseRelation(deg, rem, pA, pB):
 
         return nth + " cousin " + times
 
-        
-
-        
 def parseGender(gender):
     if isinstance(gender, tuple) and len(gender) == 8:
         return gender
@@ -233,6 +233,3 @@ def parseDate(date):
     assert day in range(1,32) and month in range(1,13) and year >= 1000
     return (months[month - 1] + " " + str(day) + ", " + str(year))
 
-
-
-    
