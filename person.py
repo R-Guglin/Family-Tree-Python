@@ -164,7 +164,7 @@ class Person:
     def save(self, filename = None):
         if not filename:
             #figure out how to get the current directory, because this is not it
-            path = "JSONs/"
+            path = ""
             filename = path + self.name.asFileName()
         data = self.getData()
         self.file = filename
