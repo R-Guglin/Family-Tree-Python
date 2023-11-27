@@ -48,20 +48,20 @@ class Name:
                     if suffix:
                         if suffix != self.suffix:
                             return False 
-        return True
+            return True
      
 class Date:
     def __init__(self, day = 1, month = 1, year = 1):
         self.day = self.month = self.year = 1
 
-        if type(day) == int and day in range(1,32):
-            self.day = day
+        if day == "" and int(day) in range(1,32):
+            self.day = int(day)
 
-        if type(month) == int and month in range(1,13):
-            self.month = month
+        if month != "" and int(month) in range(1,13):
+            self.month = int(month)
 
-        if type(year) == int and year > 0:
-            self.year = year
+        if year != "" and int(year) > 0:
+            self.year = int(year)
 
     @classmethod
     def fromData(cls, data):
@@ -155,7 +155,7 @@ class Person:
         ccount = int(input("How many children does " + first + " have? "))
         if ccount > 0:
             for i in range(ccount):
-                print("Person",str(i+1))
+                print(first + ": Child " + str(i+1))
                 newChild = Person.fromUser()
                 newP.setChild(newChild)
         
@@ -164,7 +164,7 @@ class Person:
     def save(self, filename = None):
         if not filename:
             #figure out how to get the current directory, because this is not it
-            path = ""
+            path = "JSONs/"
             filename = path + self.name.asFileName()
         data = self.getData()
         self.file = filename
@@ -212,4 +212,4 @@ class Person:
         return -99
     
     def __repr__(self):
-        return str(self.name) + " (Age " + str(self.getAge()) + ") "
+        return str(self.name) + " (Age " + str(self.getAge()) + ")"
