@@ -54,6 +54,9 @@ class FTree:
                 if getRelation(person, p) == type:
                     rels.append(g)
     
+    def __repr__(self) -> str:
+        return treeString(self.root)
+
 # Family tree toolkit
 
 def getLCA(A, B): 
@@ -96,7 +99,7 @@ def parseRelation(deg, rem, pA, pB):
             else:
                 return "sibling's " + parseRelation(-1, rem, Person(), pB)
         elif rem == 0: # sibling
-            return (pA.birthdate == pB.birthdate) * "twin " + terms[5]
+            return (pA.bday == pB.bday) * "twin " + terms[5]
         elif rem > 0:
             return ((abs(2 - max(rem, 2)) * "great-") + (min(1, abs(1 - rem)) * "grand") + terms[6])
         
@@ -104,11 +107,11 @@ def parseRelation(deg, rem, pA, pB):
         nth = str(deg) + "th "
         times = " " + str(abs(rem)) + " times removed"
 
-        if nth[-3] == "1":
+        if nth[-4] == "1":
             nth = str(deg) + "st "
-        elif nth[-3] == "2":
+        elif nth[-4] == "2":
             nth = str(deg) + "nd "
-        elif nth[-3] == "3":
+        elif nth[-4] == "3":
             nth == str(deg) + "rd "
 
         if rem == 0:
@@ -125,6 +128,7 @@ def parseRelation(deg, rem, pA, pB):
 def parseGender(gender):
     # will accept properly-formatted custom pronoun lists
     if type(gender) == list and len(gender) == 8:
+        print("Case A")
         return gender
     elif gender in ['M', 'm']:
         return ['he', 'him', 'his', 'father', 'son', 'brother', 'uncle', 'nephew']
@@ -133,3 +137,14 @@ def parseGender(gender):
     else: 
         #default gender-neutral pronouns
         return ['they', 'them', 'theirs', 'parent', 'child', 'sibling', "parent's sibling", "sibling's child"]
+    
+# Primitive tree visualization strategy
+def treeString(root):
+    s = (root.generation * "\t") + str(root) 
+    if root.spouse:
+        s += " + " + root.spouse
+    s += "\n\n"
+    if len(root.children) > 0:
+        for c in root.children:
+            s += treeString(c)
+    return s
