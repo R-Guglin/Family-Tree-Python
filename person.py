@@ -54,7 +54,7 @@ class Date:
     def __init__(self, day = 1, month = 1, year = 1):
         self.day = self.month = self.year = 1
 
-        if day == "" and int(day) in range(1,32):
+        if day != "" and int(day) in range(1,32):
             self.day = int(day)
 
         if month != "" and int(month) in range(1,13):
